@@ -23,6 +23,7 @@ class ArticleRepositoryTest {
         myMap = Container.getObj(MyMap.class);
         articleRepository = Container.getObj(ArticleRepository.class);
     }
+
     @BeforeAll
     public void task() {
         this.myMap = new MyMap("localhost","root","0913","simpledb__test"); // MyMap 인스턴스를 초기화합니다.

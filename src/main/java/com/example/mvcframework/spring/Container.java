@@ -17,7 +17,7 @@ public class Container {
         }
 
         if (!isComponent(classType)) {
-            throw new RuntimeException(classType.getName() + " does not have @Component annotation.");
+            throw new RuntimeException(classType.getName() + ": 컴포넌트 어노테이션이 없습니다.");
         }
 
         try {
@@ -32,7 +32,6 @@ public class Container {
                 }
             }
 
-            // Save instance in the map after all dependencies are injected
             instances.put(classType, instance);
 
             return instance;
