@@ -1,23 +1,19 @@
 package com.example.mvcframework.db;
 
+import com.example.mvcframework.spring.annotation.Autowired;
+import com.example.mvcframework.spring.annotation.Component;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@Component
 @NoArgsConstructor
 public class MyMap {
     @Getter
     @Setter
     private boolean isDevMode;
+    @Autowired
     private ConnectionPool connectionPool;
-
-    public MyMap(String host, int port, String username, String password, String dbName) {
-        connectionPool = new ConnectionPool(host, port, username, password, dbName);
-    }
-
-    public MyMap(String host, String username, String password, String dbName) {
-        this(host, 3306, username, password, dbName);
-    }
 
     public SecSql genSecSql() {
         return new SecSql(connectionPool, isDevMode);
