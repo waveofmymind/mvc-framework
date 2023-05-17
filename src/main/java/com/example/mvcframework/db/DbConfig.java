@@ -3,7 +3,7 @@ package com.example.mvcframework.db;
 import com.example.mvcframework.spring.annotation.Component;
 
 @Component
-public class App {
+public class DbConfig {
     public static final String BASE_PACKAGE_PATH = "com.example.mvcframework";
     public static String DB_HOST = "localhost";
     public static int DB_PORT = 3306;
