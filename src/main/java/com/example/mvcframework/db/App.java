@@ -1,5 +1,8 @@
 package com.example.mvcframework.db;
 
+import com.example.mvcframework.spring.annotation.Component;
+
+@Component
 public class App {
     public static final String BASE_PACKAGE_PATH = "com.example.mvcframework";
     public static String DB_HOST = "localhost";

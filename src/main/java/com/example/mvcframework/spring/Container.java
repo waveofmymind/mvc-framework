@@ -1,5 +1,7 @@
 package com.example.mvcframework.spring;
 
+import com.example.mvcframework.db.ConnectionPool;
+import com.example.mvcframework.db.MyMap;
 import com.example.mvcframework.spring.annotation.*;
 
 import java.lang.reflect.Field;
@@ -8,12 +10,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Container {
-    private static Map<Class<?>, Object> instances = new HashMap<>();
+    private static Map<Class<?>, Object> classMap = new HashMap<>();
 
     public static <T> T getObj(Class<T> classType) {
 
-        if (instances.containsKey(classType)) {
-            return classType.cast(instances.get(classType));
+        if (classMap.containsKey(classType)) {
+            return classType.cast(classMap.get(classType));
         }
 
         if (!isComponent(classType)) {
@@ -32,7 +34,7 @@ public class Container {
                 }
             }
 
-            instances.put(classType, instance);
+            classMap.put(classType, instance);
 
             return instance;
         } catch (Exception e) {
@@ -49,7 +51,7 @@ public class Container {
 
 
     public static <T> void provideObj(Class<T> clazz, T obj) {
-        instances.put(clazz, obj);
+        classMap.put(clazz, obj);
     }
 }
 

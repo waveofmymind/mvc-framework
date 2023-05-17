@@ -1,11 +1,15 @@
 package com.example.mvcframework.db;
 
+import com.example.mvcframework.spring.annotation.Component;
+import lombok.NoArgsConstructor;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+@Component
 public class ConnectionPool {
     private Map<Long, Connection> connections;
     private String host;
@@ -14,24 +18,21 @@ public class ConnectionPool {
     private String username;
     private String password;
 
-    public ConnectionPool(String host, int port, String username, String password, String dbName) {
-        this.host = host;
-        this.port = port;
-        this.username = username;
-        this.password = password;
-        this.dbName = dbName;
+    public ConnectionPool() {
+        this.host = App.DB_HOST;
+        this.port = App.DB_PORT;
+        this.username = App.DB_ID;
+        this.password = App.DB_PASSWORD;
+        this.dbName = App.DB_NAME;
 
         connections = new HashMap<>();
     }
 
-    public ConnectionPool(String host, String username, String password, String dbName) {
-        this(host, 3306, username, password, dbName);
-    }
 
     public Connection getConnection() {
         long currentThreadId = Thread.currentThread().getId();
 
-        if (connections.containsKey(currentThreadId) == false) {
+        if (!connections.containsKey(currentThreadId)) {
             createConnection(currentThreadId);
         }
 
@@ -65,7 +66,7 @@ public class ConnectionPool {
     public void closeConnection() {
         long currentThreadId = Thread.currentThread().getId();
 
-        if (connections.containsKey(currentThreadId) == false) {
+        if (!connections.containsKey(currentThreadId)) {
             return;
         }
 
