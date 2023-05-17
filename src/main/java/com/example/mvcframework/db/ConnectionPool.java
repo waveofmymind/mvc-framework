@@ -1,7 +1,6 @@
 package com.example.mvcframework.db;
 
 import com.example.mvcframework.spring.annotation.Component;
-import lombok.NoArgsConstructor;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -19,11 +18,11 @@ public class ConnectionPool {
     private String password;
 
     public ConnectionPool() {
-        this.host = App.DB_HOST;
-        this.port = App.DB_PORT;
-        this.username = App.DB_ID;
-        this.password = App.DB_PASSWORD;
-        this.dbName = App.DB_NAME;
+        this.host = DbConfig.DB_HOST;
+        this.port = DbConfig.DB_PORT;
+        this.username = DbConfig.DB_ID;
+        this.password = DbConfig.DB_PASSWORD;
+        this.dbName = DbConfig.DB_NAME;
 
         connections = new HashMap<>();
     }

@@ -2,7 +2,7 @@ package com.example.mvcframework.spring;
 
 import com.example.mvcframework.db.Rq;
 import com.example.mvcframework.spring.annotation.Controller;
-import com.example.mvcframework.spring.annotation.GetMapping;
+import com.example.mvcframework.spring.annotation.mapping.GetMapping;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.reflections.Reflections;
