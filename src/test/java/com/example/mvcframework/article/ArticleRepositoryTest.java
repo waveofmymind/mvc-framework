@@ -31,7 +31,7 @@ class ArticleRepositoryTest {
         truncateArticleTable();
         // 게시물 3개를 만든다.
         // 테스트에 필요한 샘플데이터를 만든다고 보면 된다.
-//        makeArticleTestData();
+        makeArticleTestData();
     }
 
     private void makeArticleTestData() {
@@ -64,13 +64,25 @@ class ArticleRepositoryTest {
 
     @DisplayName("게시글 작성시 성공한다.")
     @Test
-    void test() {
+    void write() {
         //given
         Article article = new Article(1L, LocalDateTime.now(),LocalDateTime.now(),"제목", "내용", false);
         //when
         long articleId = articleRepository.write(article.getTitle(), article.getBody(), article.isBlind());
         //then
         Assertions.assertThat(articleId).isEqualTo(1L);
+    }
+
+    @DisplayName("id로 게시글 조회시 성공한다.")
+    @Test
+    void getArticleById() {
+        //given
+        Long articleId = 1L;
+        //when
+        Article findArticle = articleRepository.getArticleById(articleId);
+        //then
+        Assertions.assertThat(findArticle.getId()).isEqualTo(articleId);
+
     }
 
 
