@@ -3,9 +3,11 @@ package com.example.mvcframework.article;
 import com.example.mvcframework.db.MyMap;
 import com.example.mvcframework.db.SecSql;
 import com.example.mvcframework.spring.annotation.Autowired;
+import com.example.mvcframework.spring.annotation.Repository;
 
 import java.util.List;
 
+@Repository
 public class ArticleRepository {
     @Autowired
     private MyMap myMap;
