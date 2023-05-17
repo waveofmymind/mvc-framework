@@ -1,9 +1,6 @@
 package com.example.mvcframework.spring;
 
-import com.example.mvcframework.spring.annotation.Autowired;
-import com.example.mvcframework.spring.annotation.Controller;
-import com.example.mvcframework.spring.annotation.Repository;
-import com.example.mvcframework.spring.annotation.Service;
+import com.example.mvcframework.spring.annotation.*;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -19,11 +16,8 @@ public class Container {
             return classType.cast(instances.get(classType));
         }
 
-        // Check if classType is annotated with @Service, @Repository, or @Controller
-        if (!classType.isAnnotationPresent(Service.class) &&
-                !classType.isAnnotationPresent(Repository.class) &&
-                !classType.isAnnotationPresent(Controller.class)) {
-            throw new RuntimeException(classType.getName() + " does not have @Service, @Repository, or @Controller annotation.");
+        if (!isComponent(classType)) {
+            throw new RuntimeException(classType.getName() + " does not have @Component annotation.");
         }
 
         try {
@@ -46,6 +40,14 @@ public class Container {
             throw new RuntimeException(e);
         }
     }
+
+    private static boolean isComponent(Class<?> classType) {
+        return classType.isAnnotationPresent(Component.class) ||
+                classType.isAnnotationPresent(Service.class) ||
+                classType.isAnnotationPresent(Repository.class) ||
+                classType.isAnnotationPresent(Controller.class);
+    }
+
 
     public static <T> void provideObj(Class<T> clazz, T obj) {
         instances.put(clazz, obj);
