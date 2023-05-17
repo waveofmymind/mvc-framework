@@ -19,8 +19,6 @@ public class ArticleServiceTest {
     private static final int TEST_DATA_SIZE = 100;
 
     public ArticleServiceTest() {
-        this.myMap = new MyMap("localhost", "root", "0913", "simpledb__test"); // MyMap 인스턴스를 초기화합니다.
-        Container.provideObj(MyMap.class, myMap);
         myMap = Container.getObj(MyMap.class);
         articleService = Container.getObj(ArticleService.class);
     }

@@ -2,6 +2,7 @@ package com.example.mvcframework.article;
 
 import com.example.mvcframework.db.MyMap;
 import com.example.mvcframework.spring.Container;
+import com.example.mvcframework.spring.annotation.Autowired;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 
@@ -17,18 +18,9 @@ class ArticleRepositoryTest {
 
     private MyMap myMap;
 
-    public ArticleRepositoryTest() {
-        this.myMap = new MyMap("localhost","root","0913","simpledb__test"); // MyMap 인스턴스를 초기화합니다.
-        Container.provideObj(MyMap.class, myMap);
-        myMap = Container.getObj(MyMap.class);
-        articleRepository = Container.getObj(ArticleRepository.class);
-    }
-
     @BeforeAll
     public void task() {
-        this.myMap = new MyMap("localhost","root","0913","simpledb__test"); // MyMap 인스턴스를 초기화합니다.
-        Container.provideObj(MyMap.class, myMap);
-        myMap.setDevMode(true);
+        myMap = Container.getObj(MyMap.class);
         this.articleRepository = Container.getObj(ArticleRepository.class);
     }
 
