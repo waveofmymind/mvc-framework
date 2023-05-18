@@ -18,7 +18,6 @@ public class ArticleController {
     @GetMapping("/usr/article/list")
     public void showList(Rq rq) {
         List<Article> articles = articleService.getArticles();
-        System.out.println("되나요");
         rq.setAttr("articles", articles);
         rq.view("usr/article/list"); // src/main/webapp/jsp/usr/article/list.jsp 실행
     }
