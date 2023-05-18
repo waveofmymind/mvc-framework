@@ -81,5 +81,86 @@ public class ArticleController {
         rq.view("usr/article/detail");
     }
 
+    @GetMapping("/usr/article/modify/{id}")
+    public void showModify(Rq rq) {
+        long id = rq.getLongParam("id", 0);
+
+        if (id == 0) {
+            rq.historyBack("번호를 입력해주세요.");
+            return;
+        }
+
+        Article article = articleService.getArticleById(id);
+
+        if (article == null) {
+            rq.historyBack("해당 글이 존재하지 않습니다.");
+            return;
+        }
+
+        String articleBody = article.getBody();
+        // 토스트UI 에디터 특성상 script를 t-script 로 치환해야 함
+        // 나중에 처리
+        rq.setAttr("id", id);
+        rq.setAttr("articleBody", articleBody);
+        rq.setAttr("article", article);
+        rq.view("usr/article/modify");
+    }
+
+    @PostMapping("/usr/article/modify/{id}")
+    public void modify(Rq rq) {
+        long id = rq.getLongParam("id", 0);
+
+        if (id == 0) {
+            rq.historyBack("번호를 입력해주세요.");
+            return;
+        }
+
+        Article article = articleService.getArticleById(id);
+
+        if (article == null) {
+            rq.historyBack("해당 글이 존재하지 않습니다.");
+            return;
+        }
+
+        String title = rq.getParam("title", "");
+        String body = rq.getParam("body", "");
+
+        if (title.length() == 0) {
+            rq.historyBack("제목을 입력해주세요.");
+            return;
+        }
+
+        if (body.length() == 0) {
+            rq.historyBack("내용을 입력해주세요.");
+            return;
+        }
+
+        articleService.modify(id, title, body);
+
+        rq.replace("/usr/article/%d".formatted(id), "%d번 게시물이 수정 되었습니다.".formatted(id));
+    }
+
+    @GetMapping("/usr/article/delete/{id}")
+    public void delete(Rq rq) {
+        long id = rq.getLongParam("id", 0);
+
+        if (id == 0) {
+            rq.historyBack("번호를 입력해주세요.");
+            return;
+        }
+
+        Article article = articleService.getArticleById(id);
+
+        if (article == null) {
+            rq.historyBack("해당 글이 존재하지 않습니다.");
+            return;
+        }
+
+        articleService.delete(id);
+
+        rq.replace("/usr/article/list", "%d번 게시물이 삭제 되었습니다.".formatted(id));
+    }
+
+
 
 }
