@@ -53,7 +53,6 @@ public class ArticleController {
     @GetMapping("/usr/article/{id}")
     public void showDetail(Rq rq) {
 
-        //TODO: @PathVariable 구현하기 또는 {id} 값 동적으로 받
         long id = Long.parseLong(rq.getPathParam("id", "2"));
         if (id == 0) {
             rq.historyBack("번호를 입력해주세요.");

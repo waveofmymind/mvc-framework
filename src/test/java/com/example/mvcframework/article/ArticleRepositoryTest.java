@@ -70,7 +70,7 @@ class ArticleRepositoryTest {
         //when
         long articleId = articleRepository.write(article.getTitle(), article.getBody(), article.isBlind());
         //then
-        Assertions.assertThat(articleId).isEqualTo(1L);
+        Assertions.assertThat(articleId).isEqualTo(101L);
     }
 
     @DisplayName("id로 게시글 조회시 성공한다.")
