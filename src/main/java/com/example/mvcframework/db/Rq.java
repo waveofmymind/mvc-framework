@@ -30,32 +30,32 @@ public class Rq {
         resp.setContentType("text/html; charset=utf-8");
     }
 
-    public String getPathParam(String paramName, String defaultValue) {
-        if ( routeInfo == null ) {
+        public String getPathParam(String paramName, String defaultValue) {
+            if ( routeInfo == null ) {
+                return defaultValue;
+            }
+
+            String path = routeInfo.getPath();
+
+            String[] pathBits = path.substring(1).split("/");
+
+            int index = -1;
+
+            for ( int i = 0; i < pathBits.length; i++ ) {
+                String pathBit = pathBits[i];
+
+                if ( pathBit.equals("{" + paramName + "}") ) {
+                    index = i - 4;
+                    break;
+                }
+            }
+
+            if ( index != -1 ) {
+                return getPathValueByIndex(index, defaultValue);
+            }
+
             return defaultValue;
         }
-
-        String path = routeInfo.getPath();
-
-        String[] pathBits = path.split("/");
-
-        int index = -1;
-
-        for ( int i = 0; i < pathBits.length; i++ ) {
-            String pathBit = pathBits[i];
-
-            if ( pathBit.equals("{" + paramName + "}") ) {
-                index = i - 4;
-                break;
-            }
-        }
-
-        if ( index != -1 ) {
-            return getPathValueByIndex(index, defaultValue);
-        }
-
-        return defaultValue;
-    }
 
     public String getParam(String paramName, String defaultValue) {
         String value = req.getParameter(paramName);
@@ -162,7 +162,7 @@ public class Rq {
     }
 
     public String getPathValueByIndex(int index, String defaultValue) {
-        String[] bits = req.getRequestURI().split("/");
+        String[] bits = req.getRequestURI().substring(1).split("/");
 
         try {
             return bits[4 + index];
