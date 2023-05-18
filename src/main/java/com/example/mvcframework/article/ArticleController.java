@@ -3,8 +3,10 @@ package com.example.mvcframework.article;
 import com.example.mvcframework.db.Rq;
 import com.example.mvcframework.spring.annotation.Autowired;
 import com.example.mvcframework.spring.annotation.Controller;
+import com.example.mvcframework.spring.annotation.mapping.DeleteMapping;
 import com.example.mvcframework.spring.annotation.mapping.GetMapping;
 import com.example.mvcframework.spring.annotation.mapping.PostMapping;
+import com.example.mvcframework.spring.annotation.mapping.PutMapping;
 
 import java.util.List;
 
@@ -104,7 +106,7 @@ public class ArticleController {
         rq.view("usr/article/modify");
     }
 
-    @PostMapping("/usr/article/modify/{id}")
+    @PutMapping("/usr/article/modify/{id}")
     public void modify(Rq rq) {
         long id = rq.getLongParam("id", 0);
 
@@ -138,7 +140,7 @@ public class ArticleController {
         rq.replace("/usr/article/%d".formatted(id), "%d번 게시물이 수정 되었습니다.".formatted(id));
     }
 
-    @GetMapping("/usr/article/delete/{id}")
+    @DeleteMapping("/usr/article/delete/{id}")
     public void delete(Rq rq) {
         long id = rq.getLongParam("id", 0);
 
