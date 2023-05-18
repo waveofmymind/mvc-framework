@@ -9,6 +9,8 @@ import lombok.Setter;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Rq {
     private final HttpServletRequest req;
@@ -30,32 +32,45 @@ public class Rq {
         resp.setContentType("text/html; charset=utf-8");
     }
 
-        public String getPathParam(String paramName, String defaultValue) {
-            if ( routeInfo == null ) {
-                return defaultValue;
-            }
-
-            String path = routeInfo.getPath();
-
-            String[] pathBits = path.substring(1).split("/");
-
-            int index = -1;
-
-            for ( int i = 0; i < pathBits.length; i++ ) {
-                String pathBit = pathBits[i];
-
-                if ( pathBit.equals("{" + paramName + "}") ) {
-                    index = i - 4;
-                    break;
-                }
-            }
-
-            if ( index != -1 ) {
-                return getPathValueByIndex(index, defaultValue);
-            }
-
+    public String getPathParam(String paramName, String defaultValue) {
+        if (routeInfo == null) {
             return defaultValue;
         }
+
+        String path = routeInfo.getPath();
+
+        String[] pathSplitList = path.split("/");
+
+        Map<String, Integer> paramIndexMap = new HashMap<>();
+
+        for (int i = 0; i < pathSplitList.length; i++) {
+            String pathBit = pathSplitList[i];
+
+            if (pathBit.startsWith("{") && pathBit.endsWith("}")) {
+                String name = pathBit.substring(1, pathBit.length() - 1);
+                paramIndexMap.put(name, i);
+            }
+        }
+
+        Integer index = paramIndexMap.get(paramName);
+
+        if (index != null) {
+            return getPathValueByIndex(index, defaultValue);
+        }
+
+        return defaultValue;
+    }
+
+    public String getPathValueByIndex(int index, String defaultValue) {
+        String[] pathSplitList = req.getRequestURI().split("/");
+
+        try {
+            return pathSplitList[index];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            return defaultValue;
+        }
+    }
+
 
     public String getParam(String paramName, String defaultValue) {
         String value = req.getParameter(paramName);
@@ -161,15 +176,6 @@ public class Rq {
         }
     }
 
-    public String getPathValueByIndex(int index, String defaultValue) {
-        String[] bits = req.getRequestURI().substring(1).split("/");
-
-        try {
-            return bits[4 + index];
-        } catch (ArrayIndexOutOfBoundsException e) {
-            return defaultValue;
-        }
-    }
 
     public void replace(String uri, String msg) {
         if (msg != null && msg.trim().length() > 0) {
