@@ -1,4 +1,3 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,8 +6,8 @@
 </head>
 <body>
 <h1>게시글 수정</h1>
-<form action="/usr/article/modify/${id}" method="post">
-    <input type="hidden" name="_method" value="PUT"/>
+<form action="/usr/article/modify/${id}" method="POST">
+    <input type="hidden" name="_method" value="PUT">
     <div>
         <label for="title">제목:</label>
         <input type="text" id="title" name="title">
@@ -21,3 +20,4 @@
 </form>
 </body>
 </html>
+
