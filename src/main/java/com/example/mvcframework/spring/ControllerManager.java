@@ -4,7 +4,6 @@ import com.example.mvcframework.db.DbConfig;
 import com.example.mvcframework.db.RouteInfo;
 import com.example.mvcframework.db.Rq;
 import com.example.mvcframework.spring.annotation.Controller;
-import com.example.mvcframework.spring.annotation.PathVariable;
 import com.example.mvcframework.spring.annotation.mapping.DeleteMapping;
 import com.example.mvcframework.spring.annotation.mapping.GetMapping;
 import com.example.mvcframework.spring.annotation.mapping.PostMapping;
@@ -14,9 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.reflections.Reflections;
 
 import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -70,6 +67,15 @@ public class ControllerManager {
     public static void runAction(HttpServletRequest req, HttpServletResponse resp) {
         String requestURI = req.getRequestURI();
         String requestMethod = req.getMethod();
+        String hiddenMethod = req.getParameter("_method");
+        if (hiddenMethod != null && !hiddenMethod.isEmpty()) {
+            requestMethod = hiddenMethod.toUpperCase();  // _method 값은 대문자로 변환
+        }
+
+        if (requestURI.matches("/usr/article/delete/\\d+")) {
+            requestMethod = "DELETE";
+        }
+
         String normalizedRequestURI = normalizeURI(requestURI);
         String key = requestMethod + ":" + normalizedRequestURI;
         RouteInfo routeInfo = controllerMap.get(key);
