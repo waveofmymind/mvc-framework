@@ -19,18 +19,14 @@ class ArticleRepositoryTest {
     private MyMap myMap;
 
     @BeforeAll
-    public void task() {
+    public void beforeAll() {
         myMap = Container.getObj(MyMap.class);
         this.articleRepository = Container.getObj(ArticleRepository.class);
     }
 
     @BeforeEach
     public void beforeEach() {
-        // 게시물 테이블을 깔끔하게 삭제한다.
-        // DELETE FROM article; // 보다 TRUNCATE article; 로 삭제하는게 더 깔끔하고 흔적이 남지 않는다.
         truncateArticleTable();
-        // 게시물 3개를 만든다.
-        // 테스트에 필요한 샘플데이터를 만든다고 보면 된다.
         makeArticleTestData();
     }
 
@@ -82,8 +78,36 @@ class ArticleRepositoryTest {
         Article findArticle = articleRepository.getArticleById(articleId);
         //then
         Assertions.assertThat(findArticle.getId()).isEqualTo(articleId);
-
     }
+
+    @DisplayName("올바른 id로 게시글을 수정시 성공한다.")
+    @Test
+    void modify() {
+        //given
+        Long articleId = 1L;
+        //when
+        articleRepository.modify(articleId, "수정된 제목", "수정된 내용", true);
+        //then
+        Article findArticle = articleRepository.getArticleById(articleId);
+        Assertions.assertThat(findArticle.getTitle()).isEqualTo("수정된 제목");
+        Assertions.assertThat(findArticle.getBody()).isEqualTo("수정된 내용");
+        Assertions.assertThat(findArticle.isBlind()).isEqualTo(true);
+    }
+
+    @DisplayName("올바르지 않은 id로 수정을 요청하면 실패한다.")
+    @Test
+    void modify2() {
+        //given
+        Long articleId = 200L;
+        //when
+        articleRepository.modify(articleId, "수정된 제목", "수정된 내용", true);
+        //then
+        Article findArticle = articleRepository.getArticleById(articleId);
+        Assertions.assertThat(findArticle).isNull();
+    }
+
+
+
 
 
 

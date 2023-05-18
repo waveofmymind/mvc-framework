@@ -23,24 +23,14 @@ public class ArticleServiceTest {
         articleService = Container.getObj(ArticleService.class);
     }
 
-    // @BeforeAll 붙인 아래 메서드는
     @BeforeAll
     public void BeforeAll() {
-        // 모든 DB 처리시에, 처리되는 SQL을 콘솔에 출력
         myMap.setDevMode(true);
     }
 
-    // @BeforeEach를 붙인 아래 메서드는
-    // @Test가 달려있는 메서드가 실행되기 전에 자동으로 실행이 된다.
-    // 주로 테스트 환경을 깔끔하게 정리하는 역할을 한다.
-    // 즉 각각의 테스트케이스가 독립적인 환경에서 실행될 수 있도록 하는 역할을 한다.
     @BeforeEach
     public void beforeEach() {
-        // 게시물 테이블을 깔끔하게 삭제한다.
-        // DELETE FROM article; // 보다 TRUNCATE article; 로 삭제하는게 더 깔끔하고 흔적이 남지 않는다.
         truncateArticleTable();
-        // 게시물 3개를 만든다.
-        // 테스트에 필요한 샘플데이터를 만든다고 보면 된다.
         makeArticleTestData();
     }
 
@@ -70,12 +60,14 @@ public class ArticleServiceTest {
     public void 존재한다() {
         assertThat(articleService).isNotNull();
     }
+
     @DisplayName("게시글을 조회했을 때, 모든 게시글이 조회된다.")
     @Test
     public void getArticles() {
         List<Article> articleDtoList = articleService.getArticles();
         assertThat(articleDtoList.size()).isEqualTo(TEST_DATA_SIZE);
     }
+
     @DisplayName("id 값으로 데이터를 조회했을때 특정 게시글이 조회된다.")
     @Test
     public void getArticleById() {
@@ -88,6 +80,7 @@ public class ArticleServiceTest {
         assertThat(articleDto.getModifiedDate()).isNotNull();
         assertThat(articleDto.isBlind()).isFalse();
     }
+
     @DisplayName("게시글의 총 개수를 조회한다.")
     @Test
     public void getArticlesCount() {
@@ -95,6 +88,7 @@ public class ArticleServiceTest {
 
         assertThat(articlesCount).isEqualTo(TEST_DATA_SIZE);
     }
+
     @DisplayName("제목, 내용, 비공개 유무로 게시글을 작성할 수 있다.")
     @Test
     public void write() {
@@ -109,6 +103,7 @@ public class ArticleServiceTest {
         assertThat(articleDto.getModifiedDate()).isNotNull();
         assertThat(articleDto.isBlind()).isEqualTo(false);
     }
+
     @DisplayName("id,제목, 내용, 비공개 유무로 게시글을 수정할 수 있다.")
     @Test
     public void modify() {
@@ -129,6 +124,7 @@ public class ArticleServiceTest {
         long diffSeconds = ChronoUnit.SECONDS.between(articleDto.getModifiedDate(), LocalDateTime.now());
         assertThat(diffSeconds).isLessThanOrEqualTo(1L);
     }
+
     @DisplayName("id로 게시글을 삭제할 수 있다.")
     @Test
     public void delete() {
