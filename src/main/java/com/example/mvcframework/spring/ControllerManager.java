@@ -64,20 +64,10 @@ public class ControllerManager {
         return mappingValue.replaceAll("\\{.*?}", "{id}");
     }
 
-    public static void runAction(HttpServletRequest req, HttpServletResponse resp) {
+    public static void runAction(String httpMethod, HttpServletRequest req, HttpServletResponse resp) {
         String requestURI = req.getRequestURI();
-        String requestMethod = req.getMethod();
-        String hiddenMethod = req.getParameter("_method");
-        if (hiddenMethod != null && !hiddenMethod.isEmpty()) {
-            requestMethod = hiddenMethod.toUpperCase();  // _method 값은 대문자로 변환
-        }
-
-        if (requestURI.matches("/usr/article/delete/\\d+")) {
-            requestMethod = "DELETE";
-        }
-
         String normalizedRequestURI = normalizeURI(requestURI);
-        String key = requestMethod + ":" + normalizedRequestURI;
+        String key = httpMethod + ":" + normalizedRequestURI;
         RouteInfo routeInfo = controllerMap.get(key);
         if (routeInfo != null) {
             try {
