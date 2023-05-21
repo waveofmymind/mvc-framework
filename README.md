@@ -1,7 +1,16 @@
 # MVC 프레임워크 구현 저장소
 
+# 프로젝트 개요
+스프링과 유사한 MVC 프레임워크를 구현한 프로젝트입니다.
+
+DI 컨테이너, 디스패치 서블릿 등을 직접 구현하고, 스프링이 어떤 식으로 요청을 처리하는지 학습하기 위한 프로젝트입니다.
+
 # 기술적 도전 및 트러블 슈팅
 
-[url이 같은 경우 HTTP 메서드별로 함수 구분하기](https://waveofymymind.tistory.com/127)
+- @Service, @Repository,@Autowired 구현: DI 컨테이너 클래스를 구현하여, 프로그램을 실행시킬때, 해당 어노테이션이 붙은 클래스와 클래스 내의 필드 주입을 구현하기 위해 리플렉션 API를 사용했습니다.
 
-[url 변수 동적으로 받도록 개선하기](https://waveofymymind.tistory.com/128)
+- @Controller 구현: 디스패치 서블릿을 구현하고, 핸들러 매핑을 하는 클래스를 구현하여 스프링의 컨트롤러를 구현했습니다.
+ 
+- **[url 변수 동적으로 받도록 개선하기](https://waveofymymind.tistory.com/128):** @PathVariable과 같은 기능을 구현하기 위해 맵을 사용해 동적으로 url 변수를 얻어올 수 있도록 성능을 개선했습니다.
+ 
+- **[url 패턴이 같을 경우에 Controller 메서드 구별하기](https://waveofymymind.tistory.com/127):** 리플렉션 API를 사용해서 Controller 메서드가 붙은 클래스를 맵으로 관리하던 중 url 패턴이 동일할 경우에 발생한 문제에 대해 HTTP 메서드별로 구분할 수 있도록 개선했습니다.
